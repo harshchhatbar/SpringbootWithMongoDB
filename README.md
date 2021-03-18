@@ -12,4 +12,4 @@
 4. **Repository**: There are different repository interfaces for different collections.
 5. **Model**: This package consists of different Java classes which represents, and map to,different collections in given Database of MongoDB.
 
-**Config Package** has configurations of elasticsearch and some basic beans which will be required to interact with MongoDB.
+**Config Package** has configurations of MongoDB and some basic beans which will be required to interact with MongoDB.
