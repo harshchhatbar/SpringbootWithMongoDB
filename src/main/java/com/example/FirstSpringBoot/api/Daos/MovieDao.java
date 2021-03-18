@@ -125,9 +125,7 @@ public class MovieDao {
     }
 
     /*
-        To get an explanation of Any Query (collection scan thayu ke index scan or ketla number of doc refer karva padya
-        query solve karva mate evu badhu aapse)
-        E
+        To get an explanation of Any Query
     */
 
     public Document explainQuery(Query query)
@@ -136,8 +134,6 @@ public class MovieDao {
         explainDocument.put("find", COLLNAME);
         explainDocument.put("filter",query.getQueryObject());
         Document doc = new Document("explain",explainDocument);
-        // Aa explain attribute ma query no object nakhi devano atle e query nu explanation aapi dese
-
         return mongoTemplate.getDb().runCommand(doc);
     }
 
