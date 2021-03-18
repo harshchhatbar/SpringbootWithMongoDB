@@ -1,9 +1,9 @@
 package com.example.FirstSpringBoot.api.Model;
 
 public class Critic {
-    Double rating;
-    Integer numReviews;
-    Integer meter;
+    private Double rating;
+    private Integer numReviews;
+    private Integer meter;
 
     @Override
     public String toString() {

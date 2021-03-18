@@ -12,7 +12,7 @@ import java.util.List;
 public class UserService {
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     public List<UserMflix> getAllUser() {
 

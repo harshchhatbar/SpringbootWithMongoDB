@@ -1,9 +1,14 @@
 package com.example.FirstSpringBoot.api.Model;
 
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class IMDB {
-    Double rating;
-    Integer votes;
-    Integer id;
+    @Indexed(name = "ImdbRatingIndex")
+    private Double rating;
+    private Integer votes;
+    private Integer id;
 
     public Double getRating() {
         return rating;

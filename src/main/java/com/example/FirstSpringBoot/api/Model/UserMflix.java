@@ -7,11 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "users")
 public class UserMflix {
     @Id
-    String id;
-    String name;
+    private String id;
+    private String name;
     @Field("email")
-    String emailId;
-    String password;
+    private String emailId;
+    private String password;
 
     public String getId() {
         return id;

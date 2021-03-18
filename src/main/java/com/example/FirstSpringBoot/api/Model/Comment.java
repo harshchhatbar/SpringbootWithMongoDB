@@ -10,9 +10,9 @@ import java.util.Date;
 public class Comment {
 
     @Id
-    String id;
-    String name;
-    String email;
+    private String id;
+    private String name;
+    private String email;
 
     @Field("movie_id")
     String movieId;

@@ -14,7 +14,7 @@ import java.util.Set;
 public class CommentController {
 
     @Autowired
-    CommentService commentService;
+    private CommentService commentService;
 
     @GetMapping("/user/{username}")
     private Set<String> getMovieByUserComment(@PathVariable("username") String name)

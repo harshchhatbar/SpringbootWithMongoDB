@@ -15,9 +15,9 @@ import java.util.List;
 public class MovieController {
 
     @Autowired
-    MovieService movieService;
+    private MovieService movieService;
     @Autowired
-    MovieRepository movieRepository;
+    private MovieRepository movieRepository;
 
     @GetMapping("/getAll")
     public String getAll()

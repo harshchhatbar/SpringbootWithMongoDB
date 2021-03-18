@@ -16,7 +16,7 @@ import java.util.List;
 public class MovieService {
 
     @Autowired
-    MovieDao movieDao;
+    private MovieDao movieDao;
 
     public List<Movies> getAll()
     {

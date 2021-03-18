@@ -12,7 +12,7 @@ import java.util.*;
 public class CommentService {
 
     @Autowired
-    CommentDao commentDao;
+    private CommentDao commentDao;
 
     public Set<String> getMovieByUserComment(String name) {
 

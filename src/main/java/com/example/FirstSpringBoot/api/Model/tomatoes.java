@@ -5,15 +5,15 @@ import com.mongodb.lang.Nullable;
 import java.util.Date;
 
 public class tomatoes {
-    String website;
-    String boxOffice;
-    String production;
-    Critic viewer;
+    private String website;
+    private String boxOffice;
+    private String production;
+    private Critic viewer;
 
-    Critic critic;
+    private Critic critic;
 
-    Integer rotten;
-    Integer fresh;
+    private Integer rotten;
+    private Integer fresh;
 
     @Override
     public String toString() {

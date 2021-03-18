@@ -62,11 +62,11 @@ public class Movies {
         this.lastupdated = lastupdated;
     }
 
-    String type;
-    String poster;
-    Integer metacritic;
-    List<String> languages;
-    tomatoes tomatoes;
+    private String type;
+    private String poster;
+    private Integer metacritic;
+    private List<String> languages;
+    private tomatoes tomatoes;
 
     public ObjectId getOid() {
         return oid;

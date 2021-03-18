@@ -12,8 +12,8 @@ import java.util.List;
 @Component
 public class UserDao {
 
-    MongoClient mongoClient;
-    UserRepository userRepository;
+    private MongoClient mongoClient;
+    private UserRepository userRepository;
 
     @Autowired
     private UserDao(UserRepository userRepository, MongoClient mongoClient) {
