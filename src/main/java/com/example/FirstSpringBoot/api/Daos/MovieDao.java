@@ -3,18 +3,12 @@ package com.example.FirstSpringBoot.api.Daos;
 import com.example.FirstSpringBoot.api.Model.Movies;
 import com.example.FirstSpringBoot.api.Model.MoviesCodec;
 import com.example.FirstSpringBoot.api.Repository.MovieRepository;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.*;
 import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
 import org.bson.json.JsonWriterSettings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +17,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.index.IndexInfo;
-
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.schema.JsonSchemaObject;
 import org.springframework.stereotype.Component;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.*;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
-import static org.bson.codecs.configuration.CodecRegistries.*;
 import static org.springframework.data.domain.Sort.Order.asc;
 import static org.springframework.data.domain.Sort.Order.desc;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
@@ -47,9 +36,8 @@ public class MovieDao {
     private final MongoClient mongoClient;
     private final MongoTemplate mongoTemplate;
     private final MovieRepository movieRepository;
-    private MongoCollection<Movies> movieCollection;
+    private final MongoCollection<Movies> movieCollection;
     private final MongoDatabase db;
-    private final CodecRegistry codecRegistry;
 
     @Autowired
     private MovieDao(MovieRepository movieRepository,
@@ -61,11 +49,7 @@ public class MovieDao {
         this.mongoTemplate = mongoTemplate;
         this.movieRepository = movieRepository;
         this.movieCollection = mongoTemplate.getCollection("movies").withDocumentClass(Movies.class);
-        this.codecRegistry = fromRegistries(
-                MongoClientSettings.getDefaultCodecRegistry(),
-                fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         this.db = mongoClient.getDatabase(dbName);
-        this.movieCollection = this.db.getCollection(COLLNAME, Movies.class).withCodecRegistry(this.codecRegistry);
     }
 
     /*
@@ -74,38 +58,7 @@ public class MovieDao {
 
     public List<IndexInfo> getIndexListOfColl()
     {
-        List<IndexInfo> indexInfos = mongoTemplate.indexOps(Movies.class).getIndexInfo();
-        return indexInfos;
-    }
-
-    /*
-        To store all the documents of movies collection inside the .json file.
-    */
-    public List<Movies> getAll()
-    {
-        List<Movies> moviesList;
-        moviesList = movieRepository.findAll();
-        ObjectMapper mapper = new ObjectMapper();
-//        mapper.configure(UNWRAP_ROOT_VALUE, true);
-        File WriteInThisFile = new File("movies_try.json");
-
-//        JSONObject json = new JSONObject(jsonString); // Convert text to object
-//        System.out.println(json.toString(4)); // Print it with specified indentation
-        try {
-            JsonGenerator g = mapper.getFactory().createGenerator(new FileOutputStream(WriteInThisFile));
-            //mapper.writeValue(g, "{");
-            for(Movies movies:moviesList) {
-                mapper.writer(new MinimalPrettyPrinter("\n")).writeValue(g,movies);
-//                mapper.writeValue(g, movies);
-//                mapper.writeValue(g, json);
-//                System.out.println(json);
-            }
-            g.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return moviesList;
+        return mongoTemplate.indexOps(Movies.class).getIndexInfo();
     }
 
     public List<Movies> getMoviesByTitle(String title)
@@ -129,7 +82,6 @@ public class MovieDao {
     /*
         To get an explanation of Any Query
     */
-
     public Document explainQuery(Query query)
     {
         Document explainDocument = new Document();
@@ -396,6 +348,7 @@ public class MovieDao {
 
     public List<Movies> TomatoesRating(Double viewerRating, Double criticRating, int givenYear)
     {
+
         /*
                             using Java MongoDB Driver
         */
@@ -409,9 +362,13 @@ public class MovieDao {
 
         movieCollection.find(TomatoQuery)
                 .projection(fields(include("languages","year","tomatoes","title"),excludeId()))
-                .sort(Sorts.orderBy(Sorts.descending("tomatoes.viewer.rating")
-                        ,Sorts.ascending("year")))
+                .sort(Sorts.orderBy(
+                        Sorts.descending("tomatoes.viewer.rating")
+                        ,Sorts.ascending("year")
+                    )
+                )
                 .into(moviesList);
+
         /*
                             using Spring Data MongoDB
         */
