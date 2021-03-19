@@ -2,21 +2,19 @@ package com.example.FirstSpringBoot.api.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mongodb.lang.Nullable;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
-
-import java.util.Date;
 import java.util.List;
 
 @Document
+@CompoundIndex(name = "AwardsWins_year", def = "{'awards.wins' : 1, 'year': 1}")
 public class Movies {
-
     @BsonProperty("_id")
     @BsonId
     @JsonIgnore
@@ -44,23 +42,14 @@ public class Movies {
 
     //@Field("lastupdated")
 
-    //@Indexed(name="HEREISYEAR")
-    private String year;
+    @Indexed(name="IndexOnYear")
+    private Integer year;
     private IMDB imdb;
-
-    private Date lastupdated;
 
     public Integer getNum_mflix_comments() {
         return num_mflix_comments;
     }
 
-    public Date getLastupdated() {
-        return lastupdated;
-    }
-
-    public void setLastupdated(Date lastupdated) {
-        this.lastupdated = lastupdated;
-    }
 
     private String type;
     private String poster;
@@ -133,7 +122,7 @@ public class Movies {
         return awards;
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
@@ -202,7 +191,7 @@ public class Movies {
         this.awards = awards;
     }
 
-    public void setYear(String year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

@@ -22,4 +22,9 @@ public class MongoDBconfig extends AbstractMongoClientConfiguration {
     protected String getDatabaseName() {
         return "sample_mflix";
     }
+
+    @Override
+    protected boolean autoIndexCreation() {
+        return true;
+    }
 }

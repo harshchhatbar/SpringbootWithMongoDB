@@ -11,6 +11,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.*;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -25,6 +26,7 @@ import org.springframework.data.mongodb.core.index.IndexInfo;
 
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.schema.JsonSchemaObject;
 import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -492,11 +494,19 @@ public class MovieDao {
                 sort(Sort.Direction.DESC, "NumOfMovies","_id"),
                 limit(10)
         );
-
         // Convert the result into Document.class
-
         AggregationResults<Document> aggResult = mongoTemplate.aggregate(agg,Movies.class, Document.class);
         List<Document> moviesList1 = aggResult.getMappedResults();
         return moviesList1;
+    }
+
+    public DeleteResult removeWrongDocs() {
+        // This will get you all the doc which has year field as type String.
+        Criteria criteria1 = Criteria.where("year").type(JsonSchemaObject.Type.STRING);
+        // This will get you all the doc which has suffix value "è" in year field.
+        Criteria criteria = Criteria.where("year").regex("è$","m");
+        Query query = new Query(criteria);
+        System.out.println(mongoTemplate.find(query, Movies.class));
+        return mongoTemplate.remove(query, Movies.class);
     }
 }

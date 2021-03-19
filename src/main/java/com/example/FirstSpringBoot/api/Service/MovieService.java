@@ -2,6 +2,7 @@ package com.example.FirstSpringBoot.api.Service;
 
 import com.example.FirstSpringBoot.api.Daos.MovieDao;
 import com.example.FirstSpringBoot.api.Model.Movies;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.index.IndexInfo;
@@ -85,4 +86,7 @@ public class MovieService {
         return movieDao.FinaMoviesInEachYear(CastList);
     }
 
+    public DeleteResult removeWrongDocs() {
+        return movieDao.removeWrongDocs();
+    }
 }

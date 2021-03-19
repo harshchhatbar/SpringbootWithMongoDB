@@ -46,7 +46,7 @@ public class MoviesCodec implements CollectibleCodec<Movies> {
         movies.setRuntime(movieDoc.getInteger("runtime"));
         movies.setTomatoes(movieDoc.get("tomatoes",tomatoes.class));
         movies.setType(movieDoc.getString("type"));
-        movies.setYear(movieDoc.getString("year"));
+        movies.setYear(movieDoc.getInteger("year"));
         return movies;
     }
 
@@ -90,8 +90,6 @@ public class MoviesCodec implements CollectibleCodec<Movies> {
         if (movies.getAwards() != null)
             movieDoc.append("awards", movies.getAwards());
 
-        if (movies.getYear() != null)
-            movieDoc.append("year", movies.getYear());
 
         if (movies.getImdb() != null)
             movieDoc.append("imdb", movies.getImdb());

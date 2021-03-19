@@ -3,6 +3,7 @@ package com.example.FirstSpringBoot.api.Controller;
 import com.example.FirstSpringBoot.api.Model.Movies;
 import com.example.FirstSpringBoot.api.Repository.MovieRepository;
 import com.example.FirstSpringBoot.api.Service.MovieService;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.index.IndexInfo;
@@ -104,6 +105,12 @@ public class MovieController {
     @GetMapping("/imdbRating/{rating}")
     public List<Movies> getMoviesByImdbRating(@PathVariable("rating") double imdbRating){
         return movieRepository.getMoviesByImdbRating(imdbRating);
+    }
+
+    @DeleteMapping("/deleteWrongDoc")
+    public DeleteResult removeWrongDocs()
+    {
+        return movieService.removeWrongDocs();
     }
 
 }
