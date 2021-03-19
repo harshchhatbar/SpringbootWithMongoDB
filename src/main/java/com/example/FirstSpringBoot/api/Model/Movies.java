@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document
-@CompoundIndex(name = "AwardsWins_year", def = "{'awards.wins' : 1, 'year': 1}")
+@CompoundIndex(name = "AwardsWins_year_title", def = "{'awards.wins' : 1, 'year': 1, 'title': 1}")
 public class Movies {
     @BsonProperty("_id")
     @BsonId

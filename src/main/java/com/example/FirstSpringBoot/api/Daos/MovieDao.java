@@ -275,6 +275,7 @@ public class MovieDao {
         long ExecTime = System.nanoTime() - stTime;
         System.out.println(ExecTime/1000000);
 
+        System.out.println(moviesList.size());
         System.out.println(explainQuery(query).toJson(JsonWriterSettings
                 .builder()
                 .indent(true)
