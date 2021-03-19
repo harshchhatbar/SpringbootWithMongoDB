@@ -19,11 +19,6 @@ public class MovieService {
     @Autowired
     private MovieDao movieDao;
 
-    public List<Movies> getAll()
-    {
-        return movieDao.getAll();
-    }
-
     public List<Movies> getMoviesByTitle(String title) {
         return movieDao.getMoviesByTitle(title);
     }

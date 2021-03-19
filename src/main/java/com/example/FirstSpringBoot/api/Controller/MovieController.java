@@ -20,13 +20,6 @@ public class MovieController {
     @Autowired
     private MovieRepository movieRepository;
 
-    @GetMapping("/getAll")
-    public String getAll()
-    {
-        movieService.getAll();
-        return "completed";
-    }
-
     @GetMapping("/title/{title_name}")
     public List<Movies> getMovieList(@PathVariable("title_name") String title) {
         return movieService.getMoviesByTitle(title);

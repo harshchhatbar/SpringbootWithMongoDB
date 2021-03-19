@@ -14,18 +14,18 @@ public class CommentService {
     @Autowired
     private CommentDao commentDao;
 
-    public Set<String> getMovieByUserComment(String name) {
+    public List<Document> getMovieByUserComment(String name) {
 
         List<Document> DocsReqQuery = commentDao.getMovieByUserComment(name);
+        System.out.println(DocsReqQuery.size());
+//        Set<String> giveMoviesByUserComment = new TreeSet<>();
+//        for(Document itr: DocsReqQuery)
+//        {
+//            Document movieDoc = (Document)itr.get("movieDoc");
+//            giveMoviesByUserComment.add((String)movieDoc.get("title"));
+//            //System.out.println((String)movieDoc.get("title"));
+//        }
 
-        //Set<String> keySet = DocsReqQuery.get(0).keySet();
-        Set<String> giveMoviesByUserComment = new TreeSet<>();
-        for(Document itr: DocsReqQuery)
-        {
-            Document movieDoc = (Document)itr.get("movieDoc");
-            giveMoviesByUserComment.add((String)movieDoc.get("title"));
-        }
-
-        return giveMoviesByUserComment;
+        return DocsReqQuery;
     }
 }

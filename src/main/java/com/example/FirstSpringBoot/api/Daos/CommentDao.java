@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.expr;
+
 @Component
 public class CommentDao {
 
@@ -35,6 +37,12 @@ public class CommentDao {
         return commentRepository.findByname(name);
     }
 
+    /*
+        Return all the movies in which given user has commented.
+        - I have used Lookup stage to grab documents from Movies
+        Collection. using movies_id
+        - I also unwind array of movies document.
+    */
     public List<Document> getMovieByUserComment(String name) {
 
         List<Document> finaResult = new ArrayList<>();
@@ -45,25 +53,30 @@ public class CommentDao {
         AggPipeline.add(LookUpStage);
 
         Bson FilteringStage = Aggregates.match(new Document()
-                .append("moviesDoc", new Document()
-                        .append("$gt",new Document()
-                                .append("$size",1) )));
+                .append("moviesDoc.0", new Document()
+                        .append("$exists",1)));
 
         AggPipeline.add(FilteringStage);
 
-        Bson unwindStage = Aggregates.unwind("moviesDoc");
+        Bson unwindStage = Aggregates.unwind("$moviesDoc");
         AggPipeline.add(unwindStage);
         commentCollection.aggregate(AggPipeline).into(finaResult);
+
         return finaResult;
     }
 
+    /*
+        This is a lookup stage of previous Method.
+        Where local key is  "movie_id" and
+        foreign key is "_id" from movies collection.
+    */
     private Bson buildLookupStage() {
         List<Bson> AggPipeline = new ArrayList<>();
 
         List<Variable<String>> varList = new ArrayList<>();
-        varList.add(new Variable<>("movieId","movie_id"));
+        varList.add(new Variable<>("movieId","$movie_id"));
 
-        Bson matchStage = Aggregates.match(new Document("$eq", Arrays.asList("$_id","$$movieId")));
+        Bson matchStage = Aggregates.match(expr(new Document("$eq", Arrays.asList("$_id","$$movieId"))));
         AggPipeline.add(matchStage);
 
         return Aggregates.lookup("movies",varList, AggPipeline, "moviesDoc");
